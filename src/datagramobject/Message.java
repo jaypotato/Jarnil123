@@ -10,25 +10,29 @@ public class Message implements Serializable{
 	String sender;
 	int ttl;
 	int hop;
-	int jarak;
-	int ctr;
-	String id_msg = sender+ctr;
 	
-	public Message(String nama){
-		this.sender = nama;
-	}
+	int ctr;
+	String id_msg;
+	
+	//public Message(String nama){
+		//this.sender = nama;
+	//}
 	
 	public Message(String message, String receiver, String sender
-			,int ttl, int hop, int ctr){
+			,int ttl, int hop){
 		setMessage(message);
 		setReceiver(receiver);
 		setSender(sender);
 		setTtl(ttl);
-		setCtr(ctr);
+		//setCtr(ctr);
 		setHop(hop);
-		//setJarak(jarak);
+		setId_msg();
 	}
 
+	public void setId_msg(){
+		this.id_msg = this.sender + this.ctr;
+	}
+	
 	public String getMessage() {
 		return message;
 	}

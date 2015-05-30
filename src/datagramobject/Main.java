@@ -9,7 +9,19 @@ public class Main {
 		String nama;
 		Scanner namaSc = new Scanner(System.in);
 		nama = namaSc.toString();
-		Message Nama = new Message(nama);
+		new Message(nama);
+		
+		//listen packet datang
+		while(true){
+		
+			//IO interrupt
+			//kirim paket
+			//....
+			
+			
+			//kalau ada paket datang di simpan ke array list
+		}
+		
 	}
 
 }
