@@ -28,25 +28,15 @@ public class ReceiverSide {
                 DatagramPacket msgPacket = new DatagramPacket(buf, buf.length);
                 clientSocket.receive(msgPacket);
 
-                /*String msg = new String(buf, 0, buf.length);
-                System.out.println("received msg: " + msg + "\n\n");
-                */
-                
                 ByteArrayInputStream bais = new ByteArrayInputStream(buf);
                 ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(bais));
                 
                 try{
                     Object readObj = ois.readObject();
-                //    if (readObj instanceof String) {
-                    Message message = new Message(readObj);
-                    System.out.println("Message is: " + message);
+                
+                    Message message = (Message) readObj;
+                    System.out.println("Message is: " + message.getMessage() + ", ini pesan dari " + message.getSender());
                     ois.close();
-                //}
-                    //else 
-                //{
-                //    System.out.println("The received object is not of type"
-                //            + " String!");
-                //}
                 }
                 catch(Exception e){
                     System.out.println("No object could be read from the "

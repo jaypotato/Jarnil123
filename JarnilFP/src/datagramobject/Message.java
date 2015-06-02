@@ -8,12 +8,14 @@ public class Message implements Serializable{
 	private String sender;
 	private String receiver;
 	private int ttl;
-	
+	private int hop;
+        
 	public Message(String sender, String receiver, String message, int ttl, int hop){
 		setSender(sender);
 		setReceiver(receiver);
 		setMessage(message);
 		setTtl(ttl);
+                setHop(hop);
 	}
 
 	
@@ -49,6 +51,14 @@ public class Message implements Serializable{
 	public void setTtl(int ttl) {
 		this.ttl = ttl;
 	}
-	
+
+        public int getHop() {
+            return hop;
+        }
+
+        public void setHop(int hop) {
+            this.hop = hop;
+        }
+
 	
 }

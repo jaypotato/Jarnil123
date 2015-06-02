@@ -23,15 +23,15 @@ public class SenderSide {
                 
                 System.out.println("Masukkan pesan: ");
                 Scanner input_m = new Scanner(System.in);
-                String msg = input_m.next();
+                String msg = input_m.nextLine();
                 
                 System.out.println("Masukkan penerima: ");
                 Scanner input_r = new Scanner(System.in);
-                String recv = input_r.next();
+                String recv = input_r.nextLine();
                 
                 System.out.println("Masukkan pengirim: ");
                 Scanner input_s = new Scanner(System.in);
-                String sender = input_s.next();
+                String sender = input_s.nextLine();
                 
                 System.out.println("Masukkan TTL: ");
                 Scanner input_ttl = new Scanner(System.in);
@@ -45,7 +45,7 @@ public class SenderSide {
                 ObjectOutputStream o_out = new ObjectOutputStream(new BufferedOutputStream(b_out));
                 
                 o_out.flush();
-                o_out.writeObject(new Message(msg,recv,sender,ttl,hop));
+                o_out.writeObject(new Message(sender,recv,msg,ttl,hop));
                 o_out.flush();
                 
                 byte[] b = b_out.toByteArray();
