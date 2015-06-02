@@ -23,7 +23,7 @@ public class ThreadMulticast extends Thread {
 	public void run() {
             while (true) {
                 if (listMessage.size() == 0)
-                        System.out.println("array masih kosong...\n thread akan sleep..");
+                        System.out.println("array masih kosong...\n");
                 else {
                     for (int i = 0; i < listMessage.size(); i++) {
                         // TTL habis = drop
@@ -52,7 +52,7 @@ public class ThreadMulticast extends Thread {
                     }
 			//lakukan re-Sending selama 5detik sekali
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(300000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
 		}

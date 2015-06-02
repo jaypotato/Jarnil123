@@ -12,42 +12,38 @@ public class Message implements Serializable {
 	private int id;
 	private long msgTime;
 
-	public Message(int id, String sender, String receiver, String message,
-			int ttl, int hop) {
-		setId(id);
-		setSender(sender);
-		setReceiver(receiver);
-		setMessage(message);
-		setTtl(ttl);
-		setHop(hop);
-		setmsgTime();
-	}
-
-	
+	public Message(int id, String sender, String receiver, String message, int ttl, int hop) {
+            setId(id);
+            setSender(sender);
+            setReceiver(receiver);
+            setMessage(message);
+            setTtl(ttl);
+            setHop(hop);
+            setmsgTime();
+	}	
 	
 	public void setmsgTime() {
-		this.msgTime = System.currentTimeMillis();
+            this.msgTime = System.currentTimeMillis();
 	}
 	
 	public long getmsgTime(){
-		return this.msgTime;
+            return this.msgTime;
 	}
 
 	public void setId(int id) {
-
-		this.id = id;
+            this.id = id;
 	}
 
 	public int getId() {
-		return id;
+            return id;
 	}
 
 	public String getMessage() {
-		return message;
+            return message;
 	}
 
 	public void setMessage(String message) {
-		this.message = message;
+            this.message = message;
 	}
 
 	public String getSender() {
@@ -55,31 +51,30 @@ public class Message implements Serializable {
 	}
 
 	public void setSender(String sender) {
-		this.sender = sender;
+            this.sender = sender;
 	}
 
 	public String getReceiver() {
-		return receiver;
+            return receiver;
 	}
 
 	public void setReceiver(String receiver) {
-		this.receiver = receiver;
+            this.receiver = receiver;
 	}
 
 	public int getTtl() {
-		return ttl;
+            return ttl;
 	}
 
 	public void setTtl(int ttl) {
-		this.ttl = ttl;
+            this.ttl = ttl;
 	}
 
 	public int getHop() {
-		return hop;
+            return hop;
 	}
 
 	public void setHop(int hop) {
-		this.hop = hop;
+            this.hop = hop;
 	}
-
 }

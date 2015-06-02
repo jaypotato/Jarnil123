@@ -41,14 +41,12 @@ public class SendMessage {
 			ObjectOutputStream o_out = new ObjectOutputStream(new BufferedOutputStream(b_out));
 
 			o_out.flush();
-			o_out.writeObject(new Message(id, pengirim, penerima,
-					"ACK : message sent to " + penerima, 100000, 100000));
+			o_out.writeObject(new Message(id, pengirim, penerima,"ACK : message sent to " + penerima, 100000, 100000));
 			o_out.flush();
 
 			byte[] b = b_out.toByteArray();
 
-			DatagramPacket msgPacket = new DatagramPacket(b, b.length, addr,
-					PORT);
+			DatagramPacket msgPacket = new DatagramPacket(b, b.length, addr,PORT);
 			serverSocket.send(msgPacket);
 
 			// System.out.println("User "+ sender + " send message : " +
