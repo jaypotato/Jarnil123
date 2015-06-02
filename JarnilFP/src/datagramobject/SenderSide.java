@@ -15,10 +15,12 @@ public class SenderSide {
     
     final static String INET_ADDR = "224.0.0.3";
     final static int PORT = 8888;
+    private static ReceiverSide rcvs =  new ReceiverSide();
 
     public static void main(String[] args) throws UnknownHostException, InterruptedException {
         InetAddress addr = InetAddress.getByName(INET_ADDR);
-     
+        rcvs.start();
+        while (true) {
         try (DatagramSocket serverSocket = new DatagramSocket()) {
                 
                 System.out.println("Masukkan pesan: ");
@@ -53,11 +55,12 @@ public class SenderSide {
                 DatagramPacket msgPacket = new DatagramPacket(b,b.length, addr, PORT);
                 serverSocket.send(msgPacket);
      
-                System.out.println("User "+ sender + " send message : " + msg);
+                //System.out.println("User "+ sender + " send message : " + msg);
                 o_out.close();
      
         } catch (IOException ex) {
             ex.printStackTrace();
+        }
         }
     }
 }
