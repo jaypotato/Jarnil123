@@ -7,21 +7,16 @@ public class Main {
 	public static void main(String[] args) {
 		
 		String nama;
-		Scanner namaSc = new Scanner(System.in);
-		nama = namaSc.toString();
-		new Message(nama);
+		Scanner namaPengirim = new Scanner(System.in);
+		nama = namaPengirim.toString();
 		
-		//listen packet datang
-		while(true){
 		
-			//IO interrupt
-			//kirim paket
-			//....
-			
-			
-			//kalau ada paket datang di simpan ke array list
-		}
+		ReceiverSide RS = new ReceiverSide();
+		RS.start();
 		
+		SenderSide SS = new SenderSide(nama);
+		SS.start();
+				
 	}
 
 }

@@ -1,27 +1,20 @@
 package datagramobject;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws UnknownHostException {
 		
-		String nama;
-		Scanner namaSc = new Scanner(System.in);
-		nama = namaSc.toString();
-		new Message(nama);
+		ThreadReceive Listen = new ThreadReceive();
+		Listen.start();
 		
-		//listen packet datang
-		while(true){
-		
-			//IO interrupt
-			//kirim paket
-			//....
-			
-			
-			//kalau ada paket datang di simpan ke array list
-		}
-		
+		ThreadSend Send = new ThreadSend();
+		Send.start();
+				
+		ThreadMulticast reSend = new ThreadMulticast();
+		reSend.start();
 	}
 
 }

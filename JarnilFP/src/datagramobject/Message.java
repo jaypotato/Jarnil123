@@ -9,16 +9,25 @@ public class Message implements Serializable{
 	private String receiver;
 	private int ttl;
 	private int hop;
-        
-	public Message(String sender, String receiver, String message, int ttl, int hop){
+    private int id;    
+    private long msgTime;     
+	public Message(int id, String sender, String receiver, String message, int ttl, int hop){
+		setId(id);
 		setSender(sender);
 		setReceiver(receiver);
 		setMessage(message);
 		setTtl(ttl);
-                setHop(hop);
+        setHop(hop);
+        setmsgTime();
+	}
+	
+	public void setmsgTime(){
+		this.msgTime = System.currentTimeMillis();
 	}
 
-	
+	public void setId(int id){
+		this.id = id;
+	}
 
 	public String getMessage() {
 		return message;

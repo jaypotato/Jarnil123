@@ -1,38 +1,47 @@
 package datagramobject;
+
 import java.io.Serializable;
 
-public class Message implements Serializable{
-	
-	private static final long serialVersionUID = 1L;
-	
-	String message;
-	String receiver;
-	String sender;
-	int ttl;
-	int hop;
-	
-	int ctr;
-	String id_msg;
-	
-	//public Message(String nama){
-		//this.sender = nama;
-	//}
-	
-	public Message(String message, String receiver, String sender
-			,int ttl, int hop){
-		setMessage(message);
-		setReceiver(receiver);
+public class Message implements Serializable {
+
+	private String message;
+	private String sender;
+	private String receiver;
+	private int ttl;
+	private int hop;
+	private int id;
+	private long msgTime;
+
+	public Message(int id, String sender, String receiver, String message,
+			int ttl, int hop) {
+		setId(id);
 		setSender(sender);
+		setReceiver(receiver);
+		setMessage(message);
 		setTtl(ttl);
-		//setCtr(ctr);
 		setHop(hop);
-		setId_msg();
+		setmsgTime();
 	}
 
-	public void setId_msg(){
-		this.id_msg = this.sender + this.ctr;
+	
+	
+	public void setmsgTime() {
+		this.msgTime = System.currentTimeMillis();
 	}
 	
+	public long getmsgTime(){
+		return this.msgTime;
+	}
+
+	public void setId(int id) {
+
+		this.id = id;
+	}
+
+	public int getId() {
+		return id;
+	}
+
 	public String getMessage() {
 		return message;
 	}
@@ -41,20 +50,20 @@ public class Message implements Serializable{
 		this.message = message;
 	}
 
-	public String getReceiver() {
-		return receiver;
-	}
-
-	public void setReceiver(String receiver) {
-		this.receiver = receiver;
-	}
-
 	public String getSender() {
 		return sender;
 	}
 
 	public void setSender(String sender) {
 		this.sender = sender;
+	}
+
+	public String getReceiver() {
+		return receiver;
+	}
+
+	public void setReceiver(String receiver) {
+		this.receiver = receiver;
 	}
 
 	public int getTtl() {
@@ -72,22 +81,5 @@ public class Message implements Serializable{
 	public void setHop(int hop) {
 		this.hop = hop;
 	}
-
-	public int getJarak() {
-		return jarak;
-	}
-
-	public void setJarak(int jarak) {
-		this.jarak = jarak;
-	}
-
-	public int getCtr() {
-		return ctr;
-	}
-
-	public void setCtr(int ctr) {
-		this.ctr = ctr;
-	}
-
 
 }
