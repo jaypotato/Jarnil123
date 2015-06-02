@@ -38,6 +38,7 @@ public class ThreadSend extends Thread {
 	}
 	public void run() {
 		System.out.println("memebuat thread send");
+		System.out.println("masukkan nama : ");
 		Scanner pengirimIn = new Scanner(System.in);
 		this.pengirim = pengirimIn.next();
 		// rcvs.start();
