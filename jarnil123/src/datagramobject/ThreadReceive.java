@@ -22,27 +22,24 @@ public class ThreadReceive extends Thread {
 	static ArrayList<Message> listMessage = new ArrayList<Message>();
 
 	public void run() {
-		System.out.println("membuat thread receive");
-		InetAddress address;
+            System.out.println("membuat thread receive");
+            InetAddress address;
 		try {
-			address = InetAddress.getByName(INET_ADDR);
-			clientSocket = new MulticastSocket(PORT);
-			clientSocket.joinGroup(address);
+                    address = InetAddress.getByName(INET_ADDR);
+                    clientSocket = new MulticastSocket(PORT);
+                    clientSocket.joinGroup(address);
 		} catch (UnknownHostException ex) {
-			Logger.getLogger(ThreadReceive.class.getName()).log(Level.SEVERE,
-					null, ex);
+                    Logger.getLogger(ThreadReceive.class.getName()).log(Level.SEVERE,null, ex);
 		} catch (IOException ex) {
-			Logger.getLogger(ThreadReceive.class.getName()).log(Level.SEVERE,
-					null, ex);
+                    Logger.getLogger(ThreadReceive.class.getName()).log(Level.SEVERE,null, ex);
 		}
 
 		while (true) {
-			DatagramPacket msgPacket = new DatagramPacket(buf, buf.length);
-			try {
-				clientSocket.receive(msgPacket);
+                    DatagramPacket msgPacket = new DatagramPacket(buf, buf.length);
+                    try {
+                        clientSocket.receive(msgPacket);
 			} catch (IOException ex) {
-				Logger.getLogger(ThreadReceive.class.getName()).log(
-						Level.SEVERE, null, ex);
+                            Logger.getLogger(ThreadReceive.class.getName()).log(Level.SEVERE, null, ex);
 			}
 
 			ByteArrayInputStream bais = new ByteArrayInputStream(buf);
@@ -54,102 +51,80 @@ public class ThreadReceive extends Thread {
 				Message message = (Message) readObj;
 				int alert = 0;
 				for (int i = 0; i < listMessage.size(); i++) {
-					if (listMessage.get(i).getId() == message.getId()
-							&& listMessage.get(i).getSender()
-									.equals(message.getSender())) {
-						alert = 1;
-						break;
-					}
+                                    if (listMessage.get(i).getId() == message.getId() && listMessage.get(i).getSender().equals(message.getSender())) {
+                                        alert = 1;
+                                        break;
+                                    }
 				}
 				// pesan belum ada di array
 				if (alert != 1) {
-					// pesan dari diri sendiri tidak perlu dimasukkan ke array
-					if (message.getSender().equals(ThreadSend.getPengirim())) {
-						System.out
-								.println("--Dropping Message--\n--Message diri sendiri--\n"
-										+ "Id : "
-										+ message.getId()
-										+ "\nMessage : "
-										+ message.getMessage()
-										+ "\npengirim : "
-										+ message.getSender()
-										+ "\npenerima :"
-										+ message.getReceiver()
-										+ "\nhopnya : "
-										+ message.getHop()
-										+ "\nTTL : "
-										+ message.getTtl() + "\n");
-					}
+                                    // pesan dari diri sendiri tidak perlu dimasukkan ke array
+                                    if (message.getSender().equals(ThreadSend.getPengirim())) {
+                                        System.out.println("--Dropping Message--\n--Message diri sendiri--\n"
+                                                + "Id : "+ message.getId()
+                                                + "\nMessage : "+ message.getMessage()
+                                                + "\npengirim : "+ message.getSender()
+                                                + "\npenerima :"+ message.getReceiver()
+                                                + "\nhopnya : "+ message.getHop()
+                                                + "\nTTL : "+ message.getTtl() + "\n");
+                                    }
 					// pesannya untuk dia
-					if (message.getReceiver().equals(ThreadSend.getPengirim())) {
-						System.out.println("--Received Message--\n" + "Id : "
-								+ message.getId() + "\nMessage : "
-								+ message.getMessage() + "\npengirim : "
-								+ message.getSender() + "\npenerima :"
-								+ message.getReceiver() + "\nhopnya : "
-								+ message.getHop() + "\nTTL : "
-								+ message.getTtl() + "\n");
+                                    if (message.getReceiver().equals(ThreadSend.getPengirim())) {
+                                        System.out.println("--Received Message--\n" 
+                                                + "Id : "+ message.getId() 
+                                                + "\nMessage : "+ message.getMessage() 
+                                                + "\npengirim : "+ message.getSender() 
+                                                + "\npenerima :"+ message.getReceiver() 
+                                                + "\nhopnya : "+ message.getHop() 
+                                                + "\nTTL : "+ message.getTtl() + "\n");
 						// code untuk handling ACK
 						//kirim message ke sender asal
-						SendMessage ackSend = new SendMessage(message.getReceiver(), message.getSender());
-						ackSend.sendingMessage();
-					}
+                                            SendMessage ackSend = new SendMessage(message.getReceiver(), message.getSender());
+                                            ackSend.sendingMessage();
+                                    }
 
 					// ttl abis
-					else if (((message.getmsgTime() - System
-							.currentTimeMillis()) / 1000) > message.getTtl()) {
-						System.out
-								.println("--Dropping Message--\n--TTL abis--\n"
-										+ "Id : " + message.getId()
-										+ "\nMessage : " + message.getMessage()
-										+ "\npengirim : " + message.getSender()
-										+ "\npenerima :"
-										+ message.getReceiver() + "\nhopnya : "
-										+ message.getHop() + "\nTTL : "
-										+ message.getTtl() + "\n");
-					}
+                                    else if (((message.getmsgTime() - System.currentTimeMillis()) / 1000) > message.getTtl()) {
+                                        System.out.println("--Dropping Message--\n--TTL abis--\n"
+                                                + "Id : " + message.getId()
+                                                + "\nMessage : " + message.getMessage()
+                                                + "\npengirim : " + message.getSender()
+                                                + "\npenerima : "+ message.getReceiver() 
+                                                + "\nhopnya : "+ message.getHop() 
+                                                + "\nTTL : "+ message.getTtl() + "\n");
+                                    }
 					// hop habis
-					else if (message.getHop() <= 0) {
-						System.out
-								.println("--Dropping Message--\n--hop abis--\n"
-										+ "Id : " + message.getId()
-										+ "\nMessage : " + message.getMessage()
-										+ "\npengirim : " + message.getSender()
-										+ "\npenerima :"
-										+ message.getReceiver() + "\nhopnya : "
-										+ message.getHop() + "\nTTL : "
-										+ message.getTtl() + "\n");
-					}
+                                    else if (message.getHop() <= 0) {
+                                        System.out.println("--Dropping Message--\n--hop abis--\n"
+                                                + "Id : " + message.getId()
+                                                + "\nMessage : " + message.getMessage()
+                                                + "\npengirim : " + message.getSender()
+                                                + "\npenerima :"+ message.getReceiver() 
+                                                + "\nhopnya : "+ message.getHop() 
+                                                + "\nTTL : "+ message.getTtl() + "\n");
+                                    }
 					// pesannya bukan untuk dia
 					// simpan ke array message
-					else {
-						System.out
-								.println("--Saving Message--\n"
-										+ "Id : " + message.getId()
-										+ "\nMessage : " + message.getMessage()
-										+ "\npengirim : " + message.getSender()
-										+ "\npenerima :"
-										+ message.getReceiver() + "\nhopnya : "
-										+ message.getHop() + "\nTTL : "
-										+ message.getTtl() + "\n");
-						listMessage.add(message);
-					}
+                                    else {
+                                        System.out.println("--Saving Message--\n"
+                                                + "Id : " + message.getId()
+                                                + "\nMessage : " + message.getMessage()
+                                                + "\npengirim : " + message.getSender()
+                                                + "\npenerima :"+ message.getReceiver() 
+                                                + "\nhopnya : "+ message.getHop() 
+                                                + "\nTTL : "+ message.getTtl() + "\n");
+                                            listMessage.add(message);
+                                    }
 				}
 				// pesan sudah ada di array
 				else {
-					System.out
-							.println("--Dropping Message--\n--Message Exists--\n"
-									+ "Id : "
-									+ message.getId()
-									+ "\nMessage : "
-									+ message.getMessage()
-									+ "\npengirim : "
-									+ message.getSender()
-									+ "\npenerima :"
-									+ message.getReceiver()
-									+ "\nhopnya : "
-									+ message.getHop()
-									+ "\nTTL : " + message.getTtl());
+                                    System.out.println("--Dropping Message--\n--Message Exists--\n"
+                                            + "Id : "+ message.getId()
+                                            + "\nMessage : "+ message.getMessage()
+                                            + "\npengirim : "+ message.getSender()
+                                            + "\npenerima : "+ message.getReceiver()
+                                            + "\nhopnya : "+ message.getHop()
+                                            + "\nTTL : " + message.getTtl());
 				}
 				ois.close();
 			} catch (IOException ex) {

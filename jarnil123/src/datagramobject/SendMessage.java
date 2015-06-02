@@ -23,8 +23,8 @@ public class SendMessage {
 	}
 
 	public SendMessage(String pengirim, String penerima)
-			throws UnknownHostException {
-		this.penerima = penerima;
+            throws UnknownHostException {
+                this.penerima = penerima;
 		this.pengirim = pengirim;
 	}
 
@@ -38,8 +38,7 @@ public class SendMessage {
 			int id = rand.nextInt(1111111111);
 
 			ByteArrayOutputStream b_out = new ByteArrayOutputStream(256);
-			ObjectOutputStream o_out = new ObjectOutputStream(
-					new BufferedOutputStream(b_out));
+			ObjectOutputStream o_out = new ObjectOutputStream(new BufferedOutputStream(b_out));
 
 			o_out.flush();
 			o_out.writeObject(new Message(id, pengirim, penerima,
