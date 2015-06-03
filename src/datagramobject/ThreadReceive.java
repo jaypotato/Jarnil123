@@ -20,6 +20,7 @@ public class ThreadReceive extends Thread {
 	byte[] buf = new byte[256];
 	static MulticastSocket clientSocket;
 	static ArrayList<Message> listMessage = new ArrayList<Message>();
+	int jarakTempuh = ThreadSend.getLokasi();
 
 	public void run() {
 		System.out.println("membuat thread receive");
@@ -63,23 +64,18 @@ public class ThreadReceive extends Thread {
 				}
 				// pesan belum ada di array
 				if (alert != 1) {
-					// pesan dari diri sendiri tidak perlu dimasukkan ke array
-					if (message.getSender().equals(ThreadSend.getPengirim())) {
-						System.out
-								.println("--Dropping Message--\n--Message diri sendiri--\n"
-										+ "Id : "
-										+ message.getId()
-										+ "\nMessage : "
-										+ message.getMessage()
-										+ "\npengirim : "
-										+ message.getSender()
-										+ "\npenerima :"
-										+ message.getReceiver()
-										+ "\nhopnya : "
-										+ message.getHop()
-										+ "\nTTL : "
-										+ message.getTtl() + "\n");
-					}
+					// pesan dari diri sendiri
+					/*
+					 * if (message.getSender().equals(ThreadSend.getPengirim()))
+					 * { System.out
+					 * .println("--Dropping Message--\n--Message diri sendiri--\n"
+					 * + "Id : " + message.getId() + "\nMessage : " +
+					 * message.getMessage() + "\npengirim : " +
+					 * message.getSender() + "\npenerima :" +
+					 * message.getReceiver() + "\nhopnya : " + message.getHop()
+					 * + "\nTTL : " + message.getTtl() + "\n"); }
+					 */
+
 					// pesannya untuk dia
 					if (message.getReceiver().equals(ThreadSend.getPengirim())) {
 						System.out.println("--Received Message--\n" + "Id : "
@@ -90,8 +86,9 @@ public class ThreadReceive extends Thread {
 								+ message.getHop() + "\nTTL : "
 								+ message.getTtl() + "\n");
 						// code untuk handling ACK
-						//kirim message ke sender asal
-						SendMessage ackSend = new SendMessage(message.getReceiver(), message.getSender());
+						// kirim message ke sender asal
+						SendMessage ackSend = new SendMessage(
+								message.getReceiver(), message.getSender());
 						ackSend.sendingMessage();
 					}
 
@@ -120,11 +117,10 @@ public class ThreadReceive extends Thread {
 										+ message.getHop() + "\nTTL : "
 										+ message.getTtl() + "\n");
 					}
-					// pesannya bukan untuk dia
-					// simpan ke array message
-					else {
+					// jarak terlalu jauh = drop
+					else if (message.getmaxDistance() <= 0) {
 						System.out
-								.println("--Saving Message--\n"
+								.println("--Dropping Message--\n--jarak terlalu jauh--\n"
 										+ "Id : " + message.getId()
 										+ "\nMessage : " + message.getMessage()
 										+ "\npengirim : " + message.getSender()
@@ -132,6 +128,23 @@ public class ThreadReceive extends Thread {
 										+ message.getReceiver() + "\nhopnya : "
 										+ message.getHop() + "\nTTL : "
 										+ message.getTtl() + "\n");
+					}
+
+					// pesannya bukan untuk dia
+					// simpan ke array message
+					else {
+						System.out.println("--Saving Message--\n" + "Id : "
+								+ message.getId() + "\nMessage : "
+								+ message.getMessage() + "\npengirim : "
+								+ message.getSender() + "\npenerima :"
+								+ message.getReceiver() + "\nhopnya : "
+								+ message.getHop() + "\nTTL : "
+								+ message.getTtl() + "\n");
+						// kurangi hop - 1
+						message.setHop(message.getHop() - 1);
+						// kurangi distance sesuai jarak yang ditempuh
+						message.setmaxDistance(message.getmaxDistance()
+								- jarakTempuh);
 						listMessage.add(message);
 					}
 				}

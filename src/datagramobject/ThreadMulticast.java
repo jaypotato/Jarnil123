@@ -36,7 +36,11 @@ public class ThreadMulticast extends Thread {
 					// hop habis = drop
 					else if (listMessage.get(i).getHop() <= 0)
 						listMessage.remove(i);
-
+					
+					//terlalu jauh = drop
+					else if(listMessage.get(i).getmaxDistance() <=0)
+						listMessage.remove(i);
+					
 					// coba kirim lagi message yang ada
 					else {
 						try (DatagramSocket serverSocket = new DatagramSocket()) {

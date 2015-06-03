@@ -11,7 +11,9 @@ public class Message implements Serializable {
 	private int hop;
 	private int id;
 	private long msgTime;
-
+	private int maxDistance;
+	
+	//constructor tanpa parameter jarak lokasi
 	public Message(int id, String sender, String receiver, String message,
 			int ttl, int hop) {
 		setId(id);
@@ -22,8 +24,26 @@ public class Message implements Serializable {
 		setHop(hop);
 		setmsgTime();
 	}
-
 	
+	public Message(int id, String sender, String receiver, String message,
+			int ttl, int hop, int maxDistance) {
+		setId(id);
+		setSender(sender);
+		setReceiver(receiver);
+		setMessage(message);
+		setTtl(ttl);
+		setHop(hop);
+		setmsgTime();
+		setmaxDistance(maxDistance);
+	}
+
+	public void setmaxDistance(int maxDistance){
+		this.maxDistance = maxDistance; 
+	}
+	
+	public int getmaxDistance(){
+		return maxDistance;
+	}
 	
 	public void setmsgTime() {
 		this.msgTime = System.currentTimeMillis();

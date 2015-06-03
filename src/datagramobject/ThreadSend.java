@@ -21,7 +21,8 @@ public class ThreadSend extends Thread {
 	// private static ReceiverSide rcvs = new ReceiverSide();
 	String pesan, penerima;
 	static String pengirim;
-	int TTL, hop;
+	static int lokasi;
+	int TTL, hop, maxDist;
 	InetAddress addr = InetAddress.getByName(INET_ADDR);
 	ArrayList<Message> listMessage = ThreadReceive.listMessage; 
 	/*ThreadSend(String pengirim) throws UnknownHostException {
@@ -36,11 +37,17 @@ public class ThreadSend extends Thread {
 	public static String getPengirim(){
 		return pengirim;
 	}
+	
+	public static int getLokasi(){
+		return lokasi;
+	}
 	public void run() {
 		System.out.println("memebuat thread send");
 		System.out.println("masukkan nama : ");
 		Scanner pengirimIn = new Scanner(System.in);
 		this.pengirim = pengirimIn.next();
+		System.out.println("Masukkan Jarak Lokasi anda : ");
+		this.lokasi = pengirimIn.nextInt();
 		// rcvs.start();
 		while (true) {
 			try (DatagramSocket serverSocket = new DatagramSocket()) {
@@ -67,14 +74,23 @@ public class ThreadSend extends Thread {
 				Scanner input_hop = new Scanner(System.in);
 				int hop = input_hop.nextInt();
 				// this.hop = hop;
+				
+				System.out.println("Masukkan max Distance: ");
+				Scanner maxDstc = new Scanner(System.in);
+				int maxDist = maxDstc.nextInt();
 
 				ByteArrayOutputStream b_out = new ByteArrayOutputStream(256);
 				ObjectOutputStream o_out = new ObjectOutputStream(
 						new BufferedOutputStream(b_out));
 
 				o_out.flush();
+				/* tanpa distance
 				o_out.writeObject(new Message(id, this.pengirim, recv, msg,
 						ttl, hop));
+						*/
+				//dengan distance/lokasi
+				o_out.writeObject(new Message(id, this.pengirim, recv, msg,
+						ttl, hop, maxDist));
 				o_out.flush();
 
 				byte[] b = b_out.toByteArray();
